@@ -5,6 +5,12 @@
  */
 package ui;
 
+import static com.oracle.jrockit.jfr.Transition.To;
+import db.DBManager;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author tonitan
@@ -14,8 +20,21 @@ public class UserFrame extends javax.swing.JFrame {
     /**
      * Creates new form UserFrame
      */
-    public UserFrame() {
+    DBManager DB;
+    String user_id;
+    String[] columns1 = new String[]{
+        "Title","Description","Price","Date"
+    }    ;
+    String[] columns2=new String[]{
+        "ID","Title","Description","Price","Status","Date"
+    };
+    public UserFrame(DBManager DB, String user_id) {
+        this.setTitle("User Overview");
+        this.DB = DB;
+        this.user_id=user_id;
         initComponents();
+        this.populate_accounts_table1();
+        this.populate_accounts_table2();
     }
 
     /**
@@ -130,13 +149,14 @@ public class UserFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(category_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(go_button)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addComponent(period_combo)))
+                        .addComponent(period_combo))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(category_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(go_button)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
@@ -188,8 +208,8 @@ public class UserFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(edit_button)
                     .addComponent(delete_button))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -214,7 +234,7 @@ public class UserFrame extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(add_adv_button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(user_adv_tabbed, javax.swing.GroupLayout.PREFERRED_SIZE, 398, Short.MAX_VALUE)
+                .addComponent(user_adv_tabbed, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -222,7 +242,8 @@ public class UserFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void add_adv_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_adv_buttonActionPerformed
-        // TODO add your handling code here:
+       AddAdvFrame addFrame=new AddAdvFrame(this,DB,user_id);
+       addFrame.setVisible(true);
     }//GEN-LAST:event_add_adv_buttonActionPerformed
 
     private void search_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_boxActionPerformed
@@ -271,7 +292,7 @@ public class UserFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserFrame().setVisible(true);
+                
             }
         });
     }
@@ -295,4 +316,14 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JTable user_adv_table;
     private javax.swing.JTable user_my_adv_table;
     // End of variables declaration//GEN-END:variables
+
+    private void populate_accounts_table2() {
+       Object[][] accounts_data=DB.getUserAccounts(user_id);
+         this.user_my_adv_table.setModel(new DefaultTableModel(accounts_data,columns2));
+    }
+
+    private void populate_accounts_table1() {
+         Object[][] accounts_data=DB.getUserAccounts(user_id);
+         this.user_adv_table.setModel(new DefaultTableModel(accounts_data,columns1));
+    }
 }

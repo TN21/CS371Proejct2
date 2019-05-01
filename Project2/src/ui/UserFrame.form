@@ -41,7 +41,7 @@
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Component id="add_adv_button" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="user_adv_tabbed" pref="398" max="32767" attributes="0"/>
+              <Component id="user_adv_tabbed" min="-2" pref="398" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -111,13 +111,15 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="category_combo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="search_box" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="go_button" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="3" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
                               <Component id="period_combo" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="category_combo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="search_box" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="go_button" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -246,8 +248,8 @@
                           <Component id="edit_button" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="delete_button" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="63" max="32767" attributes="0"/>
-                      <Component id="jScrollPane2" min="-2" pref="224" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" pref="281" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
