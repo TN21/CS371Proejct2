@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package ui;
+import db.DBManager;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,8 +17,27 @@ public class ModeratorFrame extends javax.swing.JFrame {
     /**
      * Creates new form ModeratorFrame
      */
-    public ModeratorFrame() {
+    DBManager DB;
+    String moderator_id;
+    String[] columns1= new String[]{
+        "ID","Title","Description","Price","Date","Username"
+    };
+    String[]columns2=new String[]{
+        "ID","Title","Description","Price","Stuatus","Date","Username"
+    };
+            
+    public ModeratorFrame(DBManager DB, String moderator_id) {
+        this.setTitle("Moderator View");
+        this.DB=DB;
+        this.moderator_id=moderator_id;
         initComponents();
+        this.populate_moderator_unclamied_adv_table();
+        this.populate_moderator_my_adv_table();
+        
+    }
+
+    private ModeratorFrame() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -241,6 +263,16 @@ public class ModeratorFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+public void populate_moderator_unclamied_adv_table(){
+    Object[][] accounts_data=DB.getModeratorAccounts(moderator_id);
+    this.moderator_unclamied_adv_table.setModel(new DefaultTableModel(accounts_data,columns1));   
+}
+
+public void populate_moderator_my_adv_table(){
+    Object[][] accounts_data=DB.getModeratorAccounts(moderator_id);
+    this.moderator_my_adv_table.setModel(new DefaultTableModel(accounts_data,columns2));
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton approve_button;

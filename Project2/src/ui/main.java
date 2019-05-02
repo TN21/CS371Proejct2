@@ -15,7 +15,7 @@ public class main {
         DBManager DB=new DBManager();
         try{
             
-            DB.connect("root","","127.0.0.1","3306","cs371");
+            DB.connect("dthwb","","KC-SCE-APPDB01","3306","cs371");
             JFrame LoginFrame=new LoginFrame(DB);
             LoginFrame.setVisible(true);
         }

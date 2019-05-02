@@ -172,6 +172,11 @@ public class UserFrame extends javax.swing.JFrame {
         });
 
         delete_button.setText("Delete");
+        delete_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_buttonActionPerformed(evt);
+            }
+        });
 
         user_my_adv_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -255,12 +260,33 @@ public class UserFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_go_buttonActionPerformed
 
     private void edit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_buttonActionPerformed
-        // TODO add your handling code here:
+        int row=this.user_my_adv_table.getSelectedRow();
+        if(row>0){
+            String adv_id=(String)user_my_adv_table.getValueAt(row, 0);
+            String status=(String)user_my_adv_table.getValueAt(row, 5);
+            DB.changeMyAdvStatus(adv_id,status);
+        }
+        
     }//GEN-LAST:event_edit_buttonActionPerformed
 
     private void category_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_comboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_category_comboActionPerformed
+
+    private void delete_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_buttonActionPerformed
+        // TODO add your handling code here:
+        int row=this.user_my_adv_table.getSelectedRow();
+        boolean result=false;
+        if(row>=0){
+            String adv_id=(String)user_my_adv_table.getValueAt(row, 0);
+            result=DB.deleteAdv(adv_id,user_id);
+        }
+        
+        if(result){
+            JOptionPane.showMessageDialog(this, "Adverstiment deleted correctly","cONFIRMATION",JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_delete_buttonActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -296,6 +322,16 @@ public class UserFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+
+    private void populate_accounts_table1() {
+         Object[][] accounts_data=DB.getUserAccounts(user_id);
+         this.user_adv_table.setModel(new DefaultTableModel(accounts_data,columns1));
+    }
+private void populate_accounts_table2() {
+       Object[][] accounts_data=DB.getUserAccounts(user_id);
+         this.user_my_adv_table.setModel(new DefaultTableModel(accounts_data,columns2));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_adv_button;
@@ -317,13 +353,4 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JTable user_my_adv_table;
     // End of variables declaration//GEN-END:variables
 
-    private void populate_accounts_table2() {
-       Object[][] accounts_data=DB.getUserAccounts(user_id);
-         this.user_my_adv_table.setModel(new DefaultTableModel(accounts_data,columns2));
-    }
-
-    private void populate_accounts_table1() {
-         Object[][] accounts_data=DB.getUserAccounts(user_id);
-         this.user_adv_table.setModel(new DefaultTableModel(accounts_data,columns1));
-    }
 }
