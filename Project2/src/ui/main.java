@@ -11,11 +11,12 @@ import javax.swing.JFrame;
  * @author tonitan
  */
 public class main {
+    
     public static void main(String[] args){
         DBManager DB=new DBManager();
         try{
             
-            DB.connect("dthwb","","KC-SCE-APPDB01","3306","cs371");
+            DB.connect("dthwb","fHTgAEq2ifBwF4v7lHUD","KC-SCE-APPDB01","3306","cs371");
             JFrame LoginFrame=new LoginFrame(DB);
             LoginFrame.setVisible(true);
         }
