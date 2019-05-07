@@ -105,15 +105,23 @@ public class ModeratorFrame extends javax.swing.JFrame {
 
         moderator_unclamied_adv_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Title", "Description", "Price", "Date", "Username"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Float.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(moderator_unclamied_adv_table);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -178,15 +186,23 @@ public class ModeratorFrame extends javax.swing.JFrame {
 
         moderator_my_adv_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Title", "Description", "Price", "Status", "Date", "Username"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(moderator_my_adv_table);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -243,7 +259,15 @@ public class ModeratorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_go_buttonActionPerformed
 
     private void approve_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approve_buttonActionPerformed
-        // TODO add your handling code here:
+       int i = moderator_my_adv_table.getSelectedRow();
+       String adv_name = moderator_my_adv_table.getComponentAt(i, 1).toString();
+       boolean result = DB.changeAdvStatus(adv_name, "AC");
+       if(!result)
+       {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid advertisment name","Error",JOptionPane.ERROR_MESSAGE);
+       }
+       
     }//GEN-LAST:event_approve_buttonActionPerformed
 
     private void category_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_category_comboActionPerformed
@@ -251,7 +275,14 @@ public class ModeratorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_category_comboActionPerformed
 
     private void claim_adv_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_claim_adv_buttonActionPerformed
-        // TODO add your handling code here:
+       int i = moderator_unclamied_adv_table.getSelectedRow();
+       String adv_name = moderator_unclamied_adv_table.getComponentAt(i, 1).toString();
+       boolean result = DB.moderatorClaim(moderator_id, adv_name);
+       if(!result)
+       {
+            JOptionPane.showMessageDialog(this,
+                    "Invalid advertisment name","Error",JOptionPane.ERROR_MESSAGE);
+       }
         
     }//GEN-LAST:event_claim_adv_buttonActionPerformed
 
