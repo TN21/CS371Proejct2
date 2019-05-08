@@ -33,8 +33,8 @@ public class UserFrame extends javax.swing.JFrame {
         this.DB = DB;
         this.user_id=user_id;
         initComponents();
-        this.populate_accounts_table1();
-        this.populate_accounts_table2();
+        this.populate_user_adv_table();
+        this.populate_user_my_adv_table();
     }
 
     /**
@@ -109,9 +109,17 @@ public class UserFrame extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title", "Description", "Price", "Date"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(user_adv_table);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -127,7 +135,7 @@ public class UserFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(period_combo, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -149,15 +157,12 @@ public class UserFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(period_combo))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(category_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(go_button)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(category_combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(go_button)
+                    .addComponent(period_combo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 23, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
@@ -180,15 +185,23 @@ public class UserFrame extends javax.swing.JFrame {
 
         user_my_adv_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Title", "Description", "Price", "Status", "Date"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.Float.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(user_my_adv_table);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -262,9 +275,14 @@ public class UserFrame extends javax.swing.JFrame {
     private void edit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_buttonActionPerformed
         int row=this.user_my_adv_table.getSelectedRow();
         if(row>0){
-            String adv_id=(String)user_my_adv_table.getValueAt(row, 0);
-            String status=(String)user_my_adv_table.getValueAt(row, 5);
-            DB.changeMyAdvStatus(adv_id,status);
+            String adv_id=(String)user_my_adv_table.getValueAt(row, 1);
+            String adv_desc = user_my_adv_table.getComponentAt(row,2).toString();
+            boolean result=DB.editAdv(adv_desc, adv_id);
+            if(!result)
+            {
+                 JOptionPane.showMessageDialog(this,
+                         "Invalid advertisment name","Error",JOptionPane.ERROR_MESSAGE);
+            }
         }
         
     }//GEN-LAST:event_edit_buttonActionPerformed
@@ -284,6 +302,7 @@ public class UserFrame extends javax.swing.JFrame {
         
         if(result){
             JOptionPane.showMessageDialog(this, "Adverstiment deleted correctly","cONFIRMATION",JOptionPane.INFORMATION_MESSAGE);
+          
         }
     }//GEN-LAST:event_delete_buttonActionPerformed
 
@@ -324,12 +343,12 @@ public class UserFrame extends javax.swing.JFrame {
     }
     
 
-    private void populate_accounts_table1() {
+    void populate_user_adv_table() {
          Object[][] accounts_data=DB.getUserAccounts(user_id);
          this.user_adv_table.setModel(new DefaultTableModel(accounts_data,columns1));
     }
-private void populate_accounts_table2() {
-       Object[][] accounts_data=DB.getUserAccounts(user_id);
+private void populate_user_my_adv_table() {
+       Object[][] accounts_data=DB.getUserAccounts1(user_id);
          this.user_my_adv_table.setModel(new DefaultTableModel(accounts_data,columns2));
     }
 
