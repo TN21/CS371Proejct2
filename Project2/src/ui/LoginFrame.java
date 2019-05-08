@@ -64,6 +64,11 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         type_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User", "Moderator" }));
+        type_combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                type_comboActionPerformed(evt);
+            }
+        });
 
         login_button.setText("Login");
         login_button.addActionListener(new java.awt.event.ActionListener() {
@@ -113,17 +118,41 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
         String text= this.username_textbox.getText();
-        boolean result = DB.checkUsername(text);
+        boolean result, isUser;
+        if(this.type_combo.getSelectedItem().toString()=="User")
+        {
+          result = DB.checkUsername(text);
+          isUser = true;
+        }
+        else
+        {
+           result = DB.checkModUsername(text);
+          isUser = false;
+        }
+        //DB.checkUsername(text);
         if(!result){
             JOptionPane.showMessageDialog(this,
                     "Invalid username","Error",JOptionPane.ERROR_MESSAGE);
         }
         else {
-            UserFrame userFrame = new UserFrame(DB,text);
-            userFrame.setVisible(true);
-            this.setVisible(false);
+            if(isUser)
+            {
+                UserFrame userFrame = new UserFrame(DB,text);
+                userFrame.setVisible(true);
+                this.setVisible(false);
+            }
+            else
+            {
+                ModeratorFrame userFrame = new ModeratorFrame(DB,text);
+                userFrame.setVisible(true);
+                this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_login_buttonActionPerformed
+
+    private void type_comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_type_comboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_type_comboActionPerformed
 
     /**
      * @param args the command line arguments
