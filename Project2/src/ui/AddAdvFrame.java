@@ -71,7 +71,7 @@ public class AddAdvFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Category:");
 
-        category_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        category_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CAT", "HOU", "ELC", "CCA" }));
         category_combo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 category_comboActionPerformed(evt);
@@ -167,10 +167,22 @@ public class AddAdvFrame extends javax.swing.JFrame {
 
     private void add_adv_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_adv_buttonActionPerformed
         // TODO add your handling code here:
-        String title=this.title_box.getText();
-        String details=this.details_box.getText();
-        String price=this.price_box.getText();
-        String category_id=((Record)this.category_combo.getSelectedItem()).ID;
+        String adv_title=this.title_box.getText();
+        String adv_description=this.details_box.getText();
+        String adv_price=this.price_box.getText();
+        String cat_id=((Record)this.category_combo.getSelectedItem()).ID;
+        if(adv_title.trim().equals("")){
+            JOptionPane.showMessageDialog(this,"New Adv was added correctly","Confirmation",JOptionPane.ERROR_MESSAGE);
+          return;
+        }
+        boolean result=DB.addAdv(adv_title,adv_description,adv_price,cat_id,user_id);
+                if(result){
+             JOptionPane.showMessageDialog(this,
+    "A new adv was added correctly",
+    "Confirmation",
+    JOptionPane.INFORMATION_MESSAGE);
+             parent.populate_user_adv_table();
+        }
         
     }//GEN-LAST:event_add_adv_buttonActionPerformed
 
